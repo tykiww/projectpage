@@ -1,8 +1,8 @@
 ---
 title: "Non-Seasonal Arima(1,1,1)"
-output: github_document
+author: "Tyki Wada"
+output: html_document
 ---
-
 
 
 Fitting an ARIMA(1,1,1)
