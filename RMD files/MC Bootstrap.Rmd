@@ -73,11 +73,11 @@ for (j in 1:n) {
 
 tha.calls # about 40
 }
-hist(numcall4())
-mean(numcall4())
+hist(numcall4(), main = "Histogram of Bootstrapped Calls")
+c("mean # of calls" = mean(numcall4()))
 ```
 
-The histogram clearly shows a negative binomial pattern with a low probability and an estimate of about 40. If you're trying to replicate, don't worry if your histogram looks slightly diffferent from mine. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
+The histogram shows a negative binomial pattern with a low probability and an estimate of about 40. If you're trying to replicate, don't worry if your histogram looks slightly diffferent from mine. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
 
 ```{r}
 # Vectorize values
@@ -107,7 +107,7 @@ length(check) # Just to see if I have 100 elements in the vector
 # t/s = to succeed
 c("mean calls t/s"=mean(av_calls), "mean short-profit t/s"=mean(check))
 ```
-whoo, it only took about 30 seconds. That's not bad. No wonder 1000x1000 took me forever: That would have taken me about 100*30/60 which would be roughly 50 min.
+whoo, it only took about 30 seconds. That's not bad. No wonder 1000x1000 took me forever: That would have taken me about 100*30/60 which would be roughly 50 min. I have a rather nice mac that runs fairly fast. I wonder how my CPU really compares with other machines.
 
 Each check value corresponds to a monte carlo element of the short-term profit that we would earn taking into account the average revenue minus the price per call. It seems like, on average, we make about 316 dollars after successfully getting at least one call from  each of the four areas. Now, dividing that by the average number of calls gives us about 7.94 dollars on average per-call.
 ```{r}
