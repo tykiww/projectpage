@@ -90,6 +90,7 @@ nReps <- 100 # number of repetitions
 
 I previously tried this with 1000 bootstrap samples with 1000 monte carlo repetitions, but I soon realized that this was going to take way too long and I had to end the code early. More points are always nice for bootstrap sampling as our n increases, our p(power to reject the null | Ho) increases.
 I put in a timer to see how long it would take with just 100x100. It should roughly be 100 times shorter than what I was trying before!
+
 ```{r}
 ptm <- proc.time()  # Start the clock!
 
