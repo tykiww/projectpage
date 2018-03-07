@@ -17,7 +17,7 @@ In short, it's a ridiculously useful technique to create more data when we have 
 
 ===================================
 
-At first, I was going to take a look at some true/false outcomes (ie. negative binomial distribution), but I thought it might be nicer to look at more complex situations.
+At first, I was going to take a look at some true/false outcomes (ie. poisson distribution), but I thought it might be nicer to look at more complex situations.
 
 
 Here's a hypothetical situation where the bootstrap & monte carlo technique may be useful:
@@ -37,9 +37,11 @@ Here's a hypothetical situation where the bootstrap & monte carlo technique may 
 
 **Is this a valid measure of area performance?**
 
+Alright, let's get going already. First, I'll call out the beloved `dplyr` package to help me with this function. I honestly don't need it, but it makes this code a little more fun to work with. Well, since we are looking at how many tries it takes until we succeed on getting at least one call from each area. This is a great example of a compounded version of a negative binomial! For this problem, Instead of starting off each individual area and performing an rnbinom, I decided to stick them all into one sample and bootstrap it. I decided to do this because I wanted to see what the estimated profit per call was if we were calling each area at once. One large flaw with this technique is that all areas comprise the whole sample space and do not account for the compliment of the intersect of all values. Nevertheless, bootstrapping actually allows us to resample, indepdndently, without replacement, thus bringing the probability of getting at least one of each call closer to the true values (0.10, 0.25, 0.25, 0.40). 
 
+I also toyed with changing the boolean *TRUE* to a character and character matching twice -once with `grepl` to produce the T, second by using `matches` to match the TRUE with itself. These were marked with a counter until the while loop marked every area as TRUE.
 
-
+This procedure is run n times indicating the total number of monte carlo samples to go through to perform the count for how many calls it takes for us to get an answer from all four areas.
 
 ```{r}
 library(dplyr)
@@ -68,17 +70,19 @@ for (j in 1:n) {
   }
   tha.calls[j] <- sum(count)
 }
-mean(tha.calls) # about 40
+hist(tha.calls)
+print(mean(tha.calls)) # about 40
 }
 
-
+numcall4()
 ```
+The histogram clearly shows a negative binomial pattern with a low probability and an estimate of about 40. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
 
 ```{r}
 sale.prob <- .04 # probability of completing a sale/total answered phone calls.
 ppc <- .02 # price per call
 avprofit <- 199 # average profit
-nReps <- 100
+nReps <- 100 # number of repetitions
 
 ```
 
