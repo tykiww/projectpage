@@ -104,15 +104,19 @@ speed.last<-speed.last[,c(4,9:12,14,16:18,24,28:30,36:38,40,41)]
 glimpse(speed.last)
 ```
 
-Here are the summary statistics and the histogram of the speed data. Speed in this set indicates the mph over the speed limit when stopped for a violation. The shape of this data is skewed to the right with a mean of about 15 mph over the speed limit and standard deviation of 7.36 mph. There are, of course, other considerations we have to make. If you've ever had a parking citation, you would know! Usually officers mark down the speed at the time they stop you, so the information we get in the end may not be a clear reflection of a traffic violation. We could probably go faster and get it marked down. 
+Here are the summary statistics and the histogram of the speed data. Speed in this set indicates the mph over the speed limit when stopped for a violation. The shape of this data is skewed to the right with a mean of about 15 mph over the speed limit and standard deviation of 7.36 mph. There are, of course, other considerations we have to make. If you've ever had a parking citation, you would know! Usually officers mark down the speed at the time they stop you, so the information we get in the end may not be a clear reflection of a traffic violation. Realistically, we could probably go faster and get it marked down. 
 
+```{r}
+c(summary(speed.last$speed),"sd"=sd(speed.last$speed))
+hist(speed.last$speed)
+```
 
 Now, let's create the train and test datasets. As a rule of thumb, the train dataset usually consists of about 70~80% of the complete dataset, and the train is comprised of the rest. The datasets are created by randomly sampling directly out of the dataset. For this step, make sure to set a random seed so you can make sure to get opposite values of train and test. After confirming that the train and test datasets are similar, we're good to fit the model!
 ```{r}
 
 
 # Check length of dataset 
-length(speed.last$SubAgency)*.80 # close to 8000 observations
+length(speed.last$SubAgency)*.80 # 80% = close to 8000 observations
 
 
 # Create Train and Test
@@ -164,14 +168,14 @@ Now let's see how many times each explanatory variable is used in the tree. The 
 
 ```{r}
 # Model Interpretability(how often were explanatory variables used in the forest?)
-importance(out.speed)
+head(importance(out.speed))
 varImpPlot(out.speed)
 ```
 
-The importance function and the plot highlights a significant feature of the random forest. As we can see, accident and commercial vehicle measures were not used at all. Intuitively we know how accidents are a result, rather than an explanation for bad driving. I left it in to show that the rf is extremely intelligent: It seeks variables that have the best fit and ommit unnecessary variables (unless it overfits of course.. Then you'll have the rf making ludacris connections). 
+The **_importance()_** function and the plot highlights a significant feature of the random forest. As we can see, accident and commercial vehicle measures were not used at all. Intuitively we know how accidents are a result, rather than an explanation for bad driving. I left it in to show that the rf is extremely intelligent: It seeks variables that have the best fit and ommit unnecessary variables (unless it overfits of course.. Then you'll have the rf making ludacris connections). 
 
 
-Now that we have our model, let's make a prediction! First, we will grab an observation in the dataset that is very similar to my situation and *change it*. This is NOT a reflection of myself, but just creating a hypothetical person. Afterwards, we can use the predict() function to figure out:
+Now that we have our model, let's make a prediction! First, we will grab an observation in the dataset that is very similar to my situation and *change it*. This is NOT a reflection of myself, but just creating a hypothetical person. Afterwards, we can use the **_predict()_** function to figure out:
 
 How fast can you drive around Washington DC before you will get a ticket?
 
@@ -182,6 +186,7 @@ new.obs<-speed.last[25,]
 new.obs$AutoYear<-2017
 new.obs$Month<-8
 new.obs$Hour<-18
+glimpse(new.obs)
 
 predict(out.speed,newdata=new.obs)
 
