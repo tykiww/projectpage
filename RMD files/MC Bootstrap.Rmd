@@ -28,7 +28,7 @@ Here's a hypothetical situation where the bootstrap & monte carlo technique may 
 
   - Because past data has shown that at least 4 percent of people who answer calls buy your product (On average, one sale makes about $199), the manager has decided that they wanted to reevaluate how costly each phone call would be and see how many calls it will take to get at least one of every single area to respond. 
 
-  - After repeated data collection, we have observed that each division has respective probabilities of c("A" = 0.10,"B" = 0.25,"C" = 0.25,"D" = 0.40) people answering phone calls. 
+  - After repeated data collection, we have observed that each division has respective probabilities of c("A" = 0.10,"B" = 0.25,"C" = 0.25,"D" = 0.40) people answering phone calls. These all happen to add up to one, but they don't have to.
 
 
 **What is our estimated profit/per call?**
@@ -70,50 +70,75 @@ for (j in 1:n) {
   }
   tha.calls[j] <- sum(count)
 }
-hist(tha.calls)
-print(mean(tha.calls)) # about 40
-}
 
-numcall4()
+tha.calls # about 40
+}
+hist(numcall4())
+mean(numcall4())
 ```
-The histogram clearly shows a negative binomial pattern with a low probability and an estimate of about 40. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
+
+The histogram clearly shows a negative binomial pattern with a low probability and an estimate of about 40. If you're trying to replicate, don't worry if your histogram looks slightly diffferent from mine. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
 
 ```{r}
+# Vectorize values
 sale.prob <- .04 # probability of completing a sale/total answered phone calls.
 ppc <- .02 # price per call
-avprofit <- 199 # average profit
+avrev <- 199 # average revenue
 nReps <- 100 # number of repetitions
 
 ```
 
-
+I previously tried this with 1000 bootstrap samples with 1000 monte carlo repetitions, but I soon realized that this was going to take way too long and I had to end the code early. More points are always nice for bootstrap sampling as our n increases, our p(power to reject the null | Ho) increases.
+I put in a timer to see how long it would take with just 100x100. It should roughly be 100 times shorter than what I was trying before!
 ```{r}
 ptm <- proc.time()  # Start the clock!
 
 check <- c()
-calls <- c()
+av_calls <- c()
 for (i in 1:nReps) {
-av_calls[i]<- numcall4()
-check[i] <- sale.prob*av_calls[i]*avprofit - av_calls[i]*ppc
+av_calls[i]<- mean(numcall4())
+check[i] <- sale.prob*av_calls[i]*avrev - av_calls[i]*ppc
 }
+
 proc.time() - ptm   # Stop the clock
 
-length(check)
-mean(av_calls)
-mean(check)
+length(check) # Just to see if I have 100 elements in the vector
+# t/s = to succeed
+c("mean calls t/s"=mean(av_calls), "mean short-profit t/s"=mean(check))
 ```
+whoo, it only took about 30 seconds. That's not bad. No wonder 1000x1000 took me forever: That would have taken me about 100*30/60 which would be roughly 50 min.
 
+Each check value corresponds to a monte carlo element of the short-term profit that we would earn taking into account the average revenue minus the price per call. It seems like, on average, we make about 316 dollars after successfully getting at least one call from  each of the four areas. Now, dividing that by the average number of calls gives us about 7.94 dollars on average per-call.
 ```{r}
 ave_calls <- mean(av_calls)
 short_profit <- mean(check)
-short_profit/ave_calls 
-# this means we make 7.94 cents on average per call that goes through all 4 areas.
+c("prof/call" = short_profit/ave_calls )
+# this means we make $ 7.94 on average per call that goes through to all 4 areas.
+```
 
+So, in essence, if we were trying to make sure to randomly hit all 4 areas, we would expect to make 7.94 per call that goes through and 316 dollars on average if they made at least (about) 39, calls trying to randomly hit all 4 areas. 
 
-hist(check)
+Let's take a look at how confident we are about this estimate.
+
+```{r}
+hist(check,main = "Histogram of short-term profit")
 mc.err <- quantile(check,c(.025,.975))
 abline(v=mc.err,col='red')
 
 c(mc.err[1],"estimate"=short_profit,mc.err[2])
 ```
+
+After taking a look at the histogram of the data, we can be quite certain that 95% of the estimates that we have created can be expressed by (263.2050, 369.8988). In other words, we are 95% confident that the true mean short-profit is captured in this interval. I guess our confidence interval is rather wide with a margin of error of about 53 dollars. This seems quite wide. we are unsure of about 5.9 percent of our data in both directions. For better estimates, we should probably perform even more bootstrap samples to narrow up the confidence interval.
+
+*See how useful this is??* I guess another step I could add is comparing the data to a monte carlo assesed without area "A" as it had the lowest probability outcome. If I was a manager, I would take a comparison and drop one of the areas and focus on a section that yields more revenue It seems rather intuitive that if we drop A that we would make even more money.. I would do this by specifying the prob of "A"=0 in the vector above and comparing estimates by hypothesis testing. (Ho: No difference when removing area A, Ha: There is a difference). 
+
+Depending on the time, focus, and energy of the employees we could make an important cost-cutting decision to increase our profits!
+
+I guess there were a few things that I would have done completely different from this analysis. This is NOT by all means a procedure that accurately predicts the exact profits that will be gained by the company. I guess this model is more of a prescriptive measure than a predictive measure. Yet, if we have data enough to compare different set groups, we will be able to make important and informed decisions for what to do. Another important thing to consider, is that this model is probably **_only useful when the probabilities of certain areas are very similar and hard to decipher just by intuition_**. If area D had a probability of .80 for calls received, I would most definitely drop A and possibly B and/or C.
+
+Next time, I would probably take into account the compliment of all values (maybe a value "E") which would account better for probability of calls not going through. I'll probably tweak it a bit for it to be more useful, but these aren't hard fixes. 
+
+I hope this reflects, at least, some of my abilities of effective data use in an applied setting. 
+
+Thank you for patiently reading (:
 
