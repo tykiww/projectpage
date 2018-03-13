@@ -28,7 +28,7 @@ Here's a hypothetical situation where the bootstrap & monte carlo technique may 
 
   - Because past data has shown that at least 4 percent of people who answer calls buy your product (On average, one sale makes about $199), the manager has decided that they wanted to reevaluate how costly each phone call would be and see how many calls it will take to get at least one of every single area to respond. 
 
-  - After repeated data collection, we have observed that each division has respective probabilities of c("A" = 0.10,"B" = 0.25,"C" = 0.25,"D" = 0.40) people answering phone calls. These all happen to add up to one, but they don't have to.
+  - After repeated data collection, we have observed that each division has respective probabilities of c("A" = 0.10,"B" = 0.25,"C" = 0.15,"D" = 0.40, "E" = .775) people answering phone calls. E stands for the average compliment of these probabilities, so it would be the probability of no one answering.
 
 
 **What is our estimated profit/per call?**
@@ -37,7 +37,7 @@ Here's a hypothetical situation where the bootstrap & monte carlo technique may 
 
 **Is this a valid measure of area performance?**
 
-Alright, let's get going already. First, I'll call out the beloved `dplyr` package to help me with this function. I honestly don't need it, but it makes this code a little more fun to work with. Well, since we are looking at how many tries it takes until we succeed on getting at least one call from each area. This is a great example of a compounded version of a negative binomial! For this problem, Instead of starting off each individual area and performing an rnbinom, I decided to stick them all into one sample and bootstrap it. I decided to do this because I wanted to see what the estimated profit per call was if we were calling each area at once. One large flaw with this technique is that all areas comprise the whole sample space and do not account for the compliment of the intersect of all values. Nevertheless, bootstrapping actually allows us to resample, indepdndently, without replacement, thus bringing the probability of getting at least one of each call closer to the true values (0.10, 0.25, 0.25, 0.40). 
+Alright, let's get going already. First, I'll call out the beloved `dplyr` package to help me with this function. I honestly don't need it, but it makes this code a little more fun to work with. Well, since we are looking at how many tries it takes until we succeed on getting at least one call from each area. This is a great example of a compounded version of a negative binomial! For this problem, Instead of starting off each individual area and performing an rnbinom, I decided to stick them all into one sample and bootstrap it. I decided to do this because I wanted to see what the estimated profit per call was if we were calling each area at once. One large flaw with this technique is that all areas comprise the whole sample space and do not account for the compliment of the intersect of all values. Nevertheless, bootstrapping actually allows us to resample, indepdndently, without replacement, thus bringing the probability of getting at least one of each call closer to the true values (0.10, 0.25, 0.15, 0.40). 
 
 I also toyed with changing the boolean *TRUE* to a character and character matching twice -once with `grepl` to produce the T, second by using `matches` to match the TRUE with itself. These were marked with a counter until the while loop marked every area as TRUE.
 
@@ -45,6 +45,7 @@ This procedure is run n times indicating the total number of monte carlo samples
 
 ```{r}
 library(dplyr)
+
 
 numcall4 <- function(n=100) {
 tha.calls <-c()
@@ -54,9 +55,10 @@ for (j in 1:n) {
   B <- FALSE
   C <- FALSE
   D <- FALSE
+  E <- FALSE
   while (!(A & B & C & D)) {
     count <- count + 1
-    num.box <- sample(c("A", "B", "C", "D"), replace = TRUE, prob = c(0.10, 0.25, 0.25, 0.40))
+    num.box <- sample(c("A", "B", "C", "D", "E"), size = 1, replace = TRUE, prob = c(0.10, 0.25, 0.15, 0.40, 0.775))
       # just for fun, I did a character match with the boolean TRUE
     if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("A",num.box))))) {
       A <- TRUE
@@ -64,20 +66,22 @@ for (j in 1:n) {
       B <- TRUE
     } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("C",num.box))))) {
       C <- TRUE
-    } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("",num.box))))) {
+    } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("D",num.box))))) {
       D <- TRUE
-    }
+    } else
+      E <- FALSE # doesn't do anything.
   }
   tha.calls[j] <- sum(count)
 }
 
-tha.calls # about 40
+tha.calls # about 20
 }
+yup <- mean(numcall4())
 hist(numcall4(), main = "Histogram of Bootstrapped Calls")
-c("mean # of calls" = mean(numcall4()))
+c("mean # of calls" = yup)
 ```
 
-The histogram shows a negative binomial pattern with a low probability and an estimate of about 40. If you're trying to replicate, don't worry if your histogram looks slightly diffferent from mine. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
+The histogram shows a negative binomial pattern with a low probability and an estimate of about 25. If you're trying to replicate, don't worry if your histogram looks slightly diffferent from mine. Now that we have a function that gives us a MC estimate of the number of calls it takes, next we can assess the profitability of each outcome and check the confidence interval of that estimate.
 
 ```{r}
 # Vectorize values
@@ -142,4 +146,79 @@ Next time, I would probably take into account the compliment of all values (mayb
 I hope this reflects, at least, some of my abilities of effective data use in an applied setting. I just realized that I am enjoying this way too much... I am turning into a nerd. I still haven't done any of my homework.
 
 Thank you for patiently reading (:
+
+################################################################################
+
+
+Comparison Estimate!!
+
+```{r}
+numcall3 <- function(n=100) {
+tha.calls <-c()
+for (j in 1:n) {
+  count <- 0
+  A <- TRUE
+  B <- FALSE
+  C <- FALSE
+  D <- FALSE
+  E <- FALSE
+  while (!(B & C & D)) {
+    count <- count + 1
+    num.box <- sample(c("A","B", "C", "D", "E"), size = 1, replace = TRUE, prob = c(0,0.25, 0.15, 0.40, 0.7333333))
+      # just for fun, I did a character match with the boolean TRUE
+    if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("A",num.box))))) {
+      A <- TRUE
+    } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("B",num.box))))) {
+      B <- TRUE
+    } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("C",num.box))))) {
+      C <- TRUE
+    } else if (0 < sum(matches(match = "TRUE",vars = as.character(grepl("D",num.box))))) {
+      D <- TRUE
+    } else
+      E <- FALSE # doesn't do anything.
+  }
+  tha.calls[j] <- sum(count)
+}
+
+tha.calls # about 20
+}
+yup <- mean(numcall3())
+hist(numcall3(), main = "Histogram of Bootstrapped Calls")
+c("mean # of calls" = yup)
+```
+
+
+Run a test to see the difference between the groups.
+
+```{r}
+
+pval <- c()
+for (i in 1:100) {
+three <- numcall3()/3
+four <- numcall4()/4
+pval[i] <- t.test(four,three, alternative = "two.sided",conf.level = .95)$p.value
+# pval < 0.05
+}
+length(pval)
+sum(pval<.05)/100
+```
+
+Average difference of calls
+
+```{r}
+(25.61/4) - (12.64/3)
+
+
+
+
+```
+
+
+Also seems like the average profit per call does not change much with
+
+
+
+
+
+
 
