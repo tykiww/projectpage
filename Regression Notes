@@ -1,0 +1,176 @@
+Regression Notes
+
+
+Prediction is for time series, but if we are going to treat it like an experiment, it sits with more interpretation rather than prediction.
+
+
+
+EDA, asked us to compute the correlation and get the scatterplot.
+# Two explanatory variables. 
+# Usually, we would only take the higher correlation, but we can actually do multiple.
+
+
+
+# response variable: Earth's monthly temperature (Y).
+# unfortunately, we have to take an average of every second, over every day, over every place.
+# Yet, we know that there is a best practice, so we do the best we can.
+
+# explanatory variables: CO2 (ppm) and Methane (ppb)
+# Someone had a good idea to check the greenhouse gases in the atmosphere.
+# We can make sure to "Talk about all the effects "after having adjusted for the other"
+
+# Model temp = beta0 + beta1co2 + beta2methane + interaction + epsilon, e ~ N(0,sigma^2)
+# if we have two or more, it will be interesting to check for an interaction.
+
+# Fit the model. (beta0hat,beta1hat,beta2hat,s^2)
+# *Inference*: Test H0: no greenhouse gas effect AKA H0: b1=0,b2=0
+# which means that both co2 and methane should not matter.
+# if we reject, there is additional inference: test 
+# H0: no co2 effect (after adjusting for a possible methane effect, removed all other effects), 
+# and test H0: no methane effect (after adjusting for a possible co2 effect, removed other effects).
+
+# We have 2 betas, so we can't do a standard t test. 
+# Take the ANOVA approach --> compare 2 models.
+# which of these two models, is there a difference in the fit?
+# one assumes a null hypothesis to be true, the other assumes the alternative hyp to be true.
+# There will be a contradiction if the fit between the two models is radically different. 
+# assume h0 is true lm(temp~ +1) +1 means, what is the slope on the y intercept. Intercept only model.
+# assume ha is true (out.climate)
+
+# (Intercept) is when there is no effect in variables. y-intercept.
+
+
+
+# Prediction & evidence that the model is ok.
+# Train data: year <= 2015
+# Test data: year = 2016
+
+
+
+
+# Scottish Hill Races
+
+Data integrity
+
+Model: time = b0 + b1(distance) + b2(climb) + epsilon, e ~ N(0,sigma^2)
+
+
+We have to learn when things do not meet expectation. (statistics as an art.)
+
+
+
+
+
+
+outlier vs influential observation.
+Influential observation
+- Unusual in the x direction
+  - Good influential ( wouldn't have any info for the long races)
+  - Bad influential (makes a difference in model when taken out)
+Outlier
+- Unusual in y direction
+
+WE NEED MEASUREMENTS THAT HELP US CHARACTERIZE WHAT WE SEE.
+- Help us "what to do in close cases"
+- "sometimes, the eye can be tricked"
+
+
+
+# influential obs:
+Leverage (weight an observation has in predicting itself)
+- only point in that space makes it have more leverage.
+- IF I took it out, how much do I miss out on?
+- Good for prediction
+Cook's Distance (Cook's D)
+- Change in regression coefficient (compare bhat to bhat(i)) [without the ith observation.] and summarize to single value
+- Beta hat <- all the regression coefficient
+
+
+# outliers: (y-yhat)/sqrt(varhat(y-yhat))
+- standardized if divided by the variance (assumes the normal dist.), 
+  yet this is not since it doesn't use the true variance. this model is "studentized".
+- Uses R studentized residuals (remove the ith observation)
+- Normalized unit variance taking away the ith observation
+- Simply, comparing the data without using the outlier (kinda like training sample)
+  to see if our model works with and without the outlier.
+  
+  # Epsilon
+  - Do we think it is going to be okay?
+  - Common violations of the normality assumption
+    - Bimodal
+    - Skewed
+    - outliers
+    - (Best way to measure normality assumption is with R studentized residuals(histogram))
+
+# Do 2 hypothesis tests..
+  # H0: epsilons are normal.
+    - KS test Compare the cdf of H0 to empirical cdf of R studentized residuals
+    - Ask if these differences are due to chance.
+    - If the p-value is less than .05, the epsilons are not normal.
+  # H0: ith observation is an outlier
+
+# Big number for leverage?
+  - 2(p+1)/n 
+    - p+1 = how many columns in your x matrix
+# Cook's distance
+  - 4/(n-(p+1))
+
+
+
+
+
+
+#### MORE GREENHOUSE DATA
+
+# application: Greenhouse Gases impact Global Climate
+# Added Data on more greenhouse gasses.
+# Start EDA all over again. Compute correlations.
+
+# Designed experiemnt. 
+1 Factor |----*------*-----*-----|
+  Choosing 3 numbers for 3 numbers on x1
+  
+2 FActors
+x1 vs x2, choose levels of x1 and levels of x2
+Look at every possible combinations of those two. 
+If we looked at it soley on one variable, we only see 1 factor, but by adding a factor or two, we can see a multiple of both!
+Rectangle
+
+
+|
+|   x     x     x
+|   x     x     x
+|
+-------------------------
+3 Factors added another dimension!!
+
+NOW looks like a cube.
+
+Keeps looking like a cube with higher dimensions.
+Observations at the extrmees (corners)
+
+
+WE WANT ORTHOGONAL
+- all factor combinations
+- violations?
+    - if all the observations are not a cube, but a cloud in the center, 
+    or some weird shape...we are only viewing one small slice of the cube. 
+    - This means I have data in one small section of space.
+        - This is usually a cause of the observational study. 
+        This means we must live with the data that we have. 
+    - collinearity
+        - Instead of the xs being orthogonal, they are correlated. 
+        explanatory variables that are correlated. That is not a good thing.
+        I want correlation between the explanatory and response variables.
+        - What could go wrong? when the columns are nearly linear combinations
+        in the (x'x)^-1 matrix (part of betahat = (x'x)^-1 * x'y), this makes you divide by nearly 0, which is goofy
+        math. Regression coefficients sometimes become negative instead of positive.
+        
+
+
+
+# collinearity diagnostic: VIF (Variance Inflation Factor)
+## compares the data observed to a designed experiment
+## How close is what we have to a designed experiement?
+# RULE OF THUMB > 10..
+
