@@ -1,6 +1,6 @@
 # projectpage
 - Just a page listing my R files and Reports created
-- Please do NOT copy the files other than for personal use.
+- Please limit the usage of these files for personal use.
 
 These files are a collection of personal projects on public data.
 
