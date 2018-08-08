@@ -6,7 +6,7 @@ output: html_notebook
 You are at a party with 50 people, each with one half of a raffle ticket in their hand. As for the other half, everyone in the room has been instructed to write down only their first and last initials. You're probably the only one eyeing the prize (it's just a nice wooden box of some sweet scented candles, but the reason why you want it is because you forgot to buy your wife a birthday present and tomorrow is the day!). As the time approached for the organizer to close the event, he announced the winner of the raffle.
 
   "The winner of this raffle is.... T.W.!"
-  "T.W.? Really? What are the odds, that's me!"
+  "T.W.? Really? What are the odds? (it's actually 0.02) that's me!"
   
 Quickly jumping up to claim your prize, you take one step forward and realize that some dude in front of you is blocking your path. You watch him, askew, as he walked up to the podium to receive his prize. Bewildered, you ask him:
 
@@ -30,8 +30,9 @@ In this situation, we are looking for probability of pairs, not of individuals. 
   
 If we simplify the math, it will look like this:
 
-```{r}
-( 676! / (676-50)! ) / ( 676^50 )
+```r
+# We can't use !, so we use the function factorial()
+( factorial(676) / factorial(676-50) ) / ( 676^50 )
 ```
 
 Yet, unfortunately in R, we have to get a little creative as our calculations exceeded the limits on implementation (plus, you have to use `factor()` but that still doesn't work).
@@ -50,7 +51,7 @@ Wait, a 16% chance that 2 people DO NOT have the same initials? This means that 
 
 If we were to graph this outcome for n (number of people in a room) of 0:100 people, we will see this.
 
-```{r}
+```r
 initials <- function(n){
   1 - (factorial(n) * choose(676,n))/(676^n)
 }
@@ -70,9 +71,9 @@ points(50,1 - 0.1559757,col = "blue", pch = 19)
 
 The S curve tells us that at some number n, we will approach 100%. Of course, we aren't tossing out the possibility that every person has a unique set of initials that no one else has.
 
-Hold on a minute, if the probability is so high, how likely is it that the person next to me has the same birthday? How many people do I have to ask on average to find the next person that has the same initials as me? Let's do a bit more calculations.
+Hold on a minute, if the probability is so high, how likely is it that the person next I ask has the same initials? How many people do I have to ask on average to find the next person that has the same initials as me? Let's do a bit more calculations.
 
-```{r}
+```r
 # using a monte carlo sample of 10000 iterations of a negative binomial
 
 a <- rnbinom(10000,50,1 - 0.1559757)
@@ -90,7 +91,7 @@ c("lower" = b[1], "average" = c, "upper" = b[2])
 
 ![](https://tykiww.github.io/assets/same-initials/3.png)
 
-So, on average, about the 9th person you ask in the room will most likely have the same initials as you! Of course, this is under the assumption that the distribution of initials is normal ( [which it isn't](https://www.thoughtco.com/most-common-us-surnames-1422656) ). Maybe if your initials were more common.. Yet a good enough estimate. To be honest, it would be more common for someone to have more matches just because the population is skewed. If I pulled out data of the frequencies of first and last initials in the US then attach probabilities associated with each of the letters, weighted probabilities could be used to come up with more accurate numbers.
+So, on average, about the 9th person you ask in this room will most likely have the same initials as you! Of course, this is under the assumption that the distribution of initials is normal ( [which it isn't](https://www.thoughtco.com/most-common-us-surnames-1422656) ). Maybe if your initials were more common.. Yet a good enough estimate. To be honest, it would be more common for someone to have more matches just because the population is skewed. If I pulled out data of the frequencies of first and last initials in the US then attach probabilities associated with each of the letters, weighted probabilities could be used to come up with more accurate numbers.
 
 You may have picked up on it, but this is actually a widely known problem that has been applied many times. The real nickname is called the ["birthday problem"](https://en.wikipedia.org/wiki/Birthday_problem). We extend the situation of the same initials to birthdays (month and date combinations, of course..), but instead of 676 possible choices, we end up with 365 (excluding leap year). This problem has far applications to [lottery winnings](https://www.theatlantic.com/business/archive/2016/02/how-mit-students-gamed-the-lottery/470349/), [class phenotype probability](https://www.lehigh.edu/~jas0/G08.html), [marketing](https://threlkeldcomm.com/content-marketing-optimized/), and even more. Just know that it's been thought about a lot and I am not the one introducing it to you for the first time. 
 
