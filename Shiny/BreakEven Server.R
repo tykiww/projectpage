@@ -1,8 +1,3 @@
-library(shiny)
-library(FinCal)
-library(plotly)
-library(tidyverse)
-
 # server
 server <- function(input, output) {
   # Objects
@@ -18,22 +13,28 @@ server <- function(input, output) {
   output$CBE <- renderText(CBE())
   
   # Render Plot
-  output$Plot <- renderPlotly({
+  output$Plot <- renderPlotly(
+    {
     unitsX <- round(seq(0, input$UnitSale*3, by=(input$UnitSale*input$life)/30), 0)
-    TRevenue = NULL
-    for (i in 1:length(unitsX)) {
-      TRevenue[i] = unitsX[i]*input$UnitPrice
-      TRevenue
-    }
-    TCost = NULL
-    for (i in 1:length(unitsX)) {
-      TCost[i] = (unitsX[i]*input$variableCost)+(input$FixedCost+(input$investment/input$life))
-      TCost
-    }
     FCost <- input$FixedCost+(input$investment/input$life)
     Legend <- list(font = list(size=9), x=.1, y=1)
+    
+    TRevenue <- NULL
+      for (i in 1:length(unitsX)) {
+        TRevenue[i] <- unitsX[i]*input$UnitPrice
+        TRevenue
+      }
+    
+    TCost <- NULL
+      for (i in 1:length(unitsX)) {
+        TCost[i] <- (unitsX[i]*input$variableCost)+(input$FixedCost+(input$investment/input$life))
+        TCost
+      }
+    
+
+    
     # output Plotly
-    plot_ly(x=unitsX, y=((TRevenue+TCost)/1000)) %>%
+    plot_ly(x = unitsX, y = ((TRevenue+TCost)/1000)) %>%
       layout(yaxis = list(title = 'Revnue (in 1000s)'), xaxis = list(title = 'Units Sold'), legend = Legend) %>%
       add_trace(y=TRevenue, line = list(color = 'black'), name = 'Revenue', mode = 'lines') %>%
       add_trace(y=FCost, line = list(color = 'red'), name = 'Fixed costs', mode = 'lines') %>%
