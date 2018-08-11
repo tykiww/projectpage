@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+1.	矢野研究所：新入社員情報プレスリリース
+
+    a.	https://www.yano.co.jp/press-release/show/press_id/1905
+      i.	新卒採用支援市場 (Recent Graduate Support Market)
+    b.	https://www.yano.co.jp/press/download.php/001715 
+      i.	矢野研究所より、全従業員サービス市場は、2015年から2016年にかけて50,80 億円で2.2％増加しました。(According to Yano Research, a leading Japanese research firm, the overall employee training service market increased by 2.2% at JPY 50,800 million from 2015 to 2016)
+
+
+2.	スタティスタ
+
+    a.	https://www.statista.com/statistics/759458/japan-employee-training-service-market-size/
+      i.	社員研修市場: fy2009-fy2018 (十億単位) (Employee training services in Japan (not controlled for type of service in billions))
+
+![](aa.png)
+
+3.	産労総合研究所
+
+    a.	https://www.e-sanro.net/share/pdf/research/pr_1710.pdf
+      i.	2016年の従業員一人当たりの教育研修費用：5,273万円 (The resulted cost for training a new employee in 2016 amounted to:  52.73 million yen)
+
+4.	ロバートウォルターズ
+
+    a.	https://www.robertwalters.co.jp/content/dam/robert-walters/country/japan/files/salary-survey/E-Book2017.pdf
+      i.	社員年収レポート (Robert Walters Salary Survey for 2017) 
