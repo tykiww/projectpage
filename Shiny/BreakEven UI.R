@@ -12,7 +12,7 @@
   bold <- "font-weight: bold;"
   
   # Title Panel
-  mainTitle <- titlePanel(h1("Break-even",style = font1))
+  mainTitle <- titlePanel(h1("Simple Break-even Calculator",style = font1))
   
   # Top Body
   col1 <- column(4, style = font2,
