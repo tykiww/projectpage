@@ -1,3 +1,3 @@
 library("rsconnect")
 path <- 
-rsconnect::deployApp(path)
+rsconnect::deployApp("~/ProjectPage/Shiny/")
