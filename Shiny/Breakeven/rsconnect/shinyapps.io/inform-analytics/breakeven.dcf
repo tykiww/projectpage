@@ -1,0 +1,10 @@
+name: breakeven
+title:
+username:
+account: inform-analytics
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 398880
+bundleId: 1531137
+url: https://inform-analytics.shinyapps.io/breakeven/
+when: 1534085055.51554

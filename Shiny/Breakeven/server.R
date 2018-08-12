@@ -1,15 +1,21 @@
+library(shiny)
+library(plotly)
+library(tidyverse)
+
 # server
 server <- function(input, output) {
   # Objects
   TC <- reactive(round((input$variableCost * input$UnitSale) + (input$FixedCost + (input$investment / input$life)), 0)) 
   TR <- reactive(round(input$UnitSale * input$UnitPrice, 0)) 
-  profit <- reactive(round(input$UnitSale * input$UnitPrice - (input$variableCost*input$UnitSale + (input$FixedCost + (input$investment / input$life))), 0))
+  profit <- reactive(round((input$UnitSale * input$UnitPrice) - (input$variableCost * input$UnitSale) - ( (input$FixedCost) / input$life), 0))
+  eprofit <- reactive(round(((input$UnitSale * input$UnitPrice) - (input$variableCost * input$UnitSale) ) * 20 - input$FixedCost , 0))
   CBE <- reactive(round(input$FixedCost / (input$UnitPrice - input$variableCost), 2) %>% 
                     paste(c("units"), sep = " ")) 
   # convert to output
   output$TC <- renderText(TC())
   output$TR <- renderText(TR())
   output$profit <- renderText(profit())
+  output$eprofit <- renderText(eprofit())
   output$CBE <- renderText(CBE())
   
   # Render Plot
