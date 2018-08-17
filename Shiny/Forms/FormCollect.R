@@ -1,5 +1,5 @@
 # forms calls
-setwd("/Users/tykiwada/Collab/")
+
 
 
 library(shiny)
@@ -192,7 +192,6 @@ formUI <- function(formInfo) {
       ))
     ))
     )
-  )
 }
 
 #' @export
@@ -362,3 +361,5 @@ inlineInput <- function(tag) {
   stopifnot(inherits(tag, "shiny.tag"))
   tagAppendAttributes(tag, style = "display: inline-block;")
 }
+
+setwd("/Users/tykiwada/Collab/")
