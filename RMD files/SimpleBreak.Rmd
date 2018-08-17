@@ -84,3 +84,4 @@ If you look carefully, our calculations for this example exceed the dimension of
 
 Visualization is important. Being able to see your calculations will become an integral part of the transforming world. Putting up graphs is one way of doing this, creating interactive plots is another. Why don't we just merge the two and create an interactive dashboard for everyone to use?
 
+Hope you enjoyed.
