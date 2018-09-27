@@ -1,0 +1,33 @@
+---
+title: "Characteristics of Compounding"
+output: html_notebook
+---
+
+![](http://imgs.xkcd.com/comics/investing.png)
+
+```{r}
+# create columns
+r <- seq(0,1,by = 0.05)
+n <- 0:20
+a <- matrix(NA,21,21)
+colnames(a) <- r
+rownames(a) <- n
+
+# find just the compounding margin
+# subtract out the simple interest from 
+# total binomial calculation.
+for (j in 1:length(n)) {
+  for(i in 1:length(r)) {
+    a[j,i] <-  ((1+r[i])^(n[j]) - (1+r[i]*n[j]))
+  }
+}
+# Select columns of interest
+a <- a[,-c(1,12:21)]
+
+
+rbind(r,(72/(100*r))) %>% View 
+
+
+a[c(1:6,11,16,21),] %>% View
+```
+

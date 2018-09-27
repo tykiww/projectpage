@@ -1,0 +1,852 @@
+body, p, b, i, em, strong, td, th, h1, h2, h3, h4, h5, h6, caption  {
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+}
+
+pre, kbd {
+    font-family: Courier New, Courier, monospace;
+}
+
+body, p, b, i, em, strong, pre  {
+    color: #000000;
+}
+
+body, p, pre, kbd {
+    font-size: 12px;
+}
+
+body {
+    background-color: #FFFFFF;
+    background-repeat: no-repeat;
+}
+
+table {
+    border-color: #CCCCCC;
+}
+
+p a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+p a:hover {
+    color: #CCCC00;
+    text-decoration: none;
+    /* font-weight: bold; */
+}
+
+p a:visited {
+    color: #006699;
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #006699;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 12px;
+}
+
+h6 {
+    font-size: 10px;
+}
+
+a {
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+}
+
+a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #CCCC00;
+    text-decoration: none;
+}
+
+cite {
+    color: #3333FF;
+}
+
+hr {
+    color: #003366;
+/*    clip:  rect(   ); */
+}
+
+td, th {
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+    font-size: 12px;
+}
+
+td.header {
+    /* background-color: #0099CC; */
+    background-color: #006699;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+td.header a:link {
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+td.header a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+td.header a:visited {
+    color: #FFFFFF;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+td.headerleft {
+    background-color: #006699;
+    font-weight: bold;
+    text-align: left;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+td.headerleft a:link {
+	color: #FFFFFF;
+ }
+ 
+ td.headerleft a:hover {
+	color: #FFFFFF;
+ }
+ 
+ td.headerleft a:visited {
+	color: #FFFFFF;
+ }
+
+td.headerright {
+    background-color: #006699;
+    font-weight: bold;
+    text-align: right;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+td.header h1, td.header h2, td.header h3, td.header h4, td.header h5, td.header h6 {
+    color: #FFFFFF;
+}
+
+td.header p {
+    color: #FFFFFF;
+}
+
+td.highlight {
+    background-color: #FFFF99;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.highlight a:link {
+    color: #006699;
+}
+
+td.highlight a:hover {
+    color: #006699;
+}
+
+td.highlight h1, td.highlight h2, td.highlight h3, td.highlight h4, td.highlight h5, td.highlight h6 {
+    color: #000000;
+}
+
+td.highlight-center {
+    background-color: #FFFF99;
+    text-align: center;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.highlight-center a:link {
+    color: #006699;
+}
+
+td.highlight-center a:hover {
+    color: #006699;
+}
+
+td.mute {
+   background-color: #EEEEEE;
+   color: #000000;
+   font-size: 12px;
+}
+
+td.mute a:link {
+    color: #006699;
+}
+
+td.mute-center {
+   background-color: #EEEEEE;
+   color: #000000;
+   font-size: 12px;
+   text-align: center;
+}
+
+td.mute-center a:link {
+    color: #006699;
+}
+
+td.subheader {
+    background-color: #00F5F5;
+    color: #00FFFF;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+}
+
+td.element-1 {
+    background-color: #FFFFFF;
+    text-align: center;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-1 em {
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+td.element-1 a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-1 a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-2 {
+    background-color: #FFFF99;
+    text-align: center;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-2 a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-2 a:hover {
+    color: #006699;
+    text-decoration: none;
+    /* font-weight: bold; */
+}
+
+td.element-3 {
+    background-color: #EEEEEE;
+    text-align: center;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-3 a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-3 a:hover {
+    color: #006699;
+    text-decoration: none;
+    /* font-weight: bold; */
+}
+
+td.element-1L {
+    background-color: #FFFFFF;
+    text-align: left;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-1L em {
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+td.element-1L a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-1L a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-2L {
+    background-color: #FFFF99;
+    text-align: left;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-2L em {
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+td.element-2L a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-2L a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-3L {
+    background-color: #EEEEEE;
+    text-align: left;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-3L a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-3L a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-1R {
+    background-color: #FFFFFF;
+    text-align: right;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-1R a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-1R a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-2R {
+    background-color: #FFFF99;
+    text-align: right;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-2R a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-2R a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+td.element-3R {
+    background-color: #EEEEEE;
+    text-align: right;
+    color: #000000;
+    font-size: 12px;
+}
+
+td.element-3R a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+td.element-3R a:hover {
+    color: #006699;
+    text-decoration: none;
+}
+
+tr.subheader {
+    background-color: #00F5F5;
+    color: #6F59A6;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+}
+
+tr.header {
+    background-color: #0099CC;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+dt.emphasis {
+   font-weight: bold;
+}
+
+dt.title {
+	font-weight: bold;
+	color: #006699;
+}
+
+/* Header frame file styles */
+
+body.header {
+    background-color: #006699;
+    color: #FFFFFF;
+}
+
+body.header p, body.header b, body.header i, body.header em, body.header strong, body.header td, body.header th, body.header caption, body.header a:link, body.header a:hover, body.header a:visited {
+    font-family: Arial, Helvetica, Geneva, sans-serif;
+}
+
+body.header h1, body.header h2, body.header h3, body.header h4, body.header h5, body.header h6, body.header p {
+    color: #FFFFFF;
+}
+
+body.header h1, body.header h2, body.header h3, body.header h4, body.header h5, body.header h6 {
+    font-family: Geneva, Verdana, Skia, sans-serif;
+}
+
+body.header a:link {
+    color: #FFFF33;
+    text-decoration: underline;
+}
+
+body.header a:hover {
+    color: #FF9966;
+    text-decoration: none;
+}
+
+body.header a:visited {
+    color: #FF9966;
+    text-decoration: underline;
+}
+
+body.header td.sidenote {
+    font-size: 10px;
+    font-style: normal;
+}
+
+body.header td.sidenote em {
+/*    color: #FF6600; */
+    color: #FF9966;
+    font-size: 10px;
+    font-weight: bold;
+    font-style: normal;
+}
+
+body.header td.mainnote {
+    font-size: 12px;
+    font-style: normal;
+}
+
+body.header td.mainnote em {
+/*    color: #FF6600; */
+    color: #FF9966;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+}
+
+body.header td.interest {
+    font-size: 10px;
+    font-style: normal;
+}
+
+body.header td.interest em {
+/*    color: #FF6600; */
+    color: #FF9966;
+    font-size: 10px;
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* End Header frame file styles */
+
+
+.footerfont {
+    /* font-family: Arial, Helvetica, Verdana, Skia, sans-serif; */
+    font-size: 10px;
+}
+
+.footerfont b {
+    color: #006699;
+}
+
+.bodyfont {
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+    font-size:12px;
+}
+
+.colheader {
+    background-color: #0099CC;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+    font-size: 12px
+}
+
+.colheader-leftaligned {
+    background-color: #0099CC;
+    font-weight: bold;
+    color: white;
+}
+
+.subheader {
+    background-color: #00F5F5;
+    color: #6F59A6;
+    font-weight: bold;
+    text-align: center;
+}
+
+.rowheader {
+    background-color: #0099CC;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.boldedhighlight {
+    background-color: #FFFF99;
+    color: #000000;
+    font-weight: bold;
+}
+
+.highlight {
+    background-color: #FFFF99;
+    color: #000000;
+}
+
+.mute {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+
+.skia {
+    font-family: Skia, Verdana, Arial, Helvetica, sans-serif;
+}
+
+.rowelement {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+
+.rowelement12px {
+    color: #000000;
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+    font-size: 12px;
+    background-color: #EEEEEE
+}
+
+.sparsepagelink {
+    font-size: 18px;
+}
+
+.fontsize12px {
+    font-size: 12px;
+}
+
+.fontsize10px {
+    font-size: 10px;
+}
+
+.important {
+    color: red;
+    font-style: italic;
+}
+
+.announce {
+    width: 100%;
+    border-style: solid;
+    border-color: #003366;
+    border-width: 1px;
+    padding: 10px;
+    background: #FFFF99;
+    font-style: italic;
+}
+
+.announce a:link {
+    color: #006699;
+    text-decoration: underline;
+}
+
+.announce a:hover {
+    color: #006699;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.announce a:visited {
+    color: #006699;
+    text-decoration: underline;
+}
+
+.announce em {
+    font-style: normal;
+    font-weight: bold;
+    background: #006699;
+    color: #FFFFFF;
+    padding: 1px;
+}
+
+.column {
+    width: 100%;
+    border-style: none none none solid;
+    border-color: #CCCCCC;
+    border-width: 2px;
+    padding: 0px;
+    background: #FFFFFF;
+}
+
+.column p.header {
+    background-color: #0099CC;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 2px 0px 3px 0px;
+}
+
+.column li {
+    font-size: 12px;
+    padding: 0px;
+}
+
+.column a:link {
+    font-style: italic;
+    color: #006699;
+}
+
+.column a:hover {
+    color: #006699;
+    /* font-weight: bold; */
+    text-decoration: none;
+}
+
+.column a:visited {
+    color: #006699;
+    text-decoration: underline;
+}
+
+.footer {
+    font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+    font-size: 10px;
+}
+
+.topdelimited {
+    border-style: solid none none none;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.bottomdelimited {
+    border-style: none none solid none;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.topbottomdelimited {
+    border-style: solid none solid none;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.leftdelimited {
+    border-style: none none none solid;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.rightdelimited {
+    border-style: none solid none none;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.leftrightdelimited {
+    border-style: none solid none solid;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 10px;
+}
+
+.box {
+    border-style: solid;
+    border-color: #003366;
+    border-width: 2px;
+    padding: 5px;
+}
+
+.box em {
+    font-style: normal;
+    font-weight: bold;
+    background: #006699;
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.preformatted {
+    color: #000000;
+    font-family: Courier New, Courier, monospace;
+}
+
+table.schedule, table.schedule td, table.schedule tr {
+   font-size: 10px;
+}
+
+small {
+   font-family: Arial, Helvetica, Verdana, Skia, sans-serif; 
+   font-size: 10px;
+}
+
+input.small, select.small {
+   font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+   font-size: 10px;
+}
+
+textarea.small {
+   font-family: Arial, Helvetica, Verdana, Skia, sans-serif;
+   font-size: 10px;
+}
+
+.aslistheader dt {
+   font-size: 12px;
+   font-weight: bold;
+}
+
+body.abstract {
+   background-color: #FFFF99; 
+}
+
+/* Bibliographic styles. */
+author {
+   font-style: italic;
+}
+
+title {
+   font-style: normal;
+   font-weight: bold;
+}
+
+/* Xlisp-Stat Styles Start Here */
+body.xlispstat {
+    background-color: #FFFFFF;
+}
+
+body.xlispstat, body.xlispstat a:link, body.xlispstat a:hover, body.xlispstat a:visited,
+                body.xlispstat h1, body.xlispstat h2, body.xlispstat h3, body.xlispstat h4,
+		body.xlispstat h5, body.xlispstat h6, body.xlispstat p {
+    font-family: "Times New Roman", Times, serif;
+}
+
+body.xlispstat h1, body.xlispstat h2, body.xlispstat h3, body.xlispstat h4, body.xlispstat h5, body.xlispstat h6 {
+    color: #000000;
+    background-color: #FFFFFF;
+    font-style: italic;
+}
+
+body.xlispstat a:link, body.xlispstat a:hover, body.xlispstat a:visited {
+    color: #006699;
+    font-style: italic;
+    font-weight: bold;
+}
+
+body.xlispstat a:link {
+    text-decoration: none;
+}
+
+body.xlispstat a:hover {
+    text-decoration: underline;
+}
+
+body.xlispstat a:visited {
+    text-decoration: underline;
+}
+
+body.xlispstat hr {
+    color: #006699;
+}
+
+/* Xlisp-Stat Styles End Here */
+
+
+/* Experimental styles start here */
+
+body.new b, body.new i, body.new em, body.new strong, body.new td, body.new th, body.new caption,  body.new a:link, body.new a:hover, body.new a:visited {
+    font-family: Arial, Geneva, sans-serif;
+}
+
+body.new h1, body.new h2, body.new h3, body.new h4, body.new h5, body.new h6  {
+    font-family: Arial, Verdana, Skia, sans-serif;
+}
+
+tr.newheader {
+    background-color: #006699;
+    color: #FFFFFF;
+}
+
+tr.newheader h1, tr.newheader h2, tr.newheader h3, tr.newheader h4, tr.newheader h5, tr.newheader h6, tr.newheader p {
+    color: #FFFFFF;
+}
+
+tr.newheader a:link {
+    color: #FFFF33;
+    text-decoration: underline;
+}
+
+tr.newheader a:hover {
+    color: #FFFF33;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+tr.newheader a:visited {
+    color: #FFFF33;
+    text-decoration: underline;
+}
+
+tr.newheader td.interest {
+    font-size: 10px;
+    font-style: normal;
+}
+
+tr.newheader td.interest em {
+    color: #FF6600;
+    font-size: 10px;
+    font-weight: bold;
+    font-style: normal;
+}
