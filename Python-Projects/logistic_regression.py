@@ -17,7 +17,7 @@ from sklearn.metrics import classification_report
 
 
 
-titanic =  pd.read_csv("~/Dropbox/Stats/Stat420/Lectures/regression/data/titanic_train.csv")
+titanic =  pd.read_csv("titanic_train.csv")
 titanic.columns = ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Embarked']
 titanic.head()
 

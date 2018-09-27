@@ -36,7 +36,7 @@ from sklearn.linear_model import LassoLarsCV
 
  
 ### Load the dataset into dataframe, ensure read-in correctly
-twinData = pd.read_csv("~/Dropbox/Stats/Stat420/Lectures/regression/data/twinstudy/twins.txt")
+twinData = pd.read_csv("pythondata/twinstudy/twins.txt")
 twinData.head()
 
 twinData.dtypes
