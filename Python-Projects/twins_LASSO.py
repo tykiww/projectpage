@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
 
 
+
+# Improving simple linear model by replacing OLS estimation with some alternative fitting procedure
+# recall OLS estimators have the least variance for unbiased estimators
+# Why should we use an alternative fitting procedure? 1. prediction accuracy 2. model interpretability
+
+# as models become more complex, we can pick up more local structure/curvature. This is because of a tradeoff
+# of useful information with non-useful information.
+
+# In essence, I am trying to add biasto minimize or reduce some of the variance.
+
+# we can add bias by removing terms. Several ways we can determine the removal of factor (p-values, AIC/BIC).
+# However, as n gets larger, p-values start to get useless and AIC/BIC values become computationally heavy.
+# This is why we need to "regularize" the coefficient estimates. This means to shrink/minimize the OLS estimates
+# Mathematically, there is a penalty that reduces the coefficients and creates scale equivalents.
+
+# lambda parameter. This is the tuning parameter that minimizes the penalty and selects the smalles error rate.
+# We select a grid of potential values and use cross-validations to estimate the error rate on test data and select the value that gives the smallest error rate.
+
+
+
 # DLHRWAGE.....the difference (twin 1 minus twin 2) in the logarithm of 
 #              hourly wage, given in dollars.                                              
 # DEDUC1.......the difference (twin 1 minus twin 2) in self-reported 
@@ -50,7 +70,7 @@ twinData = twinData.dropna()
 twinData[['DLHRWAGE']]
 
 # remove rows with missing data (regression will fail to run with missing data)
-twinData = pd.read_csv("~/Dropbox/Stats/Stat420/Lectures/regression/data/twinstudy/twins.txt", na_values=["."])
+twinData = pd.read_csv("pythondata/twinstudy/twins.txt", na_values=["."])
 twinData = twinData.dropna()
 twinData[['DLHRWAGE']]
 twinData.DLHRWAGE
