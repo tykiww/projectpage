@@ -5,6 +5,13 @@ output: html_notebook
 
 ![](http://imgs.xkcd.com/comics/investing.png)
 
+Compounding is easy. Howevr, not if youdo it by hand.
+
+
+
+
+
+
 ```{r}
 # create columns
 r <- seq(0,1,by = 0.05)
