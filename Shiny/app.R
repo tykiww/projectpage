@@ -1,5 +1,6 @@
 # This will run my server and UI for breakeven Analysis
-
+# on the interpreter. For the Shiny server, visit shiny
+# website on my github page --> inform-analytics.com
 library(shiny)
 library(FinCal)
 library(plotly)
