@@ -16,6 +16,3 @@ These files are a collection of personal projects on public data.
 
 <hr>
 
-<center>
-![](https://tykiww.github.io/img/con.png)
-</center>
