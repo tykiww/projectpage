@@ -68,3 +68,18 @@ for (rat_name in rating_names) {
 }
 
 b_done <- a_done
+                       
+                       
+                       nn <- c("description", "event", "film_date", "languages", 
+        "main_speaker", "name", "published_date",
+        "ratings", "related_talks", "speaker_occupation", "tags",
+        "title", "url")
+b_done[,!(colnames(b_done)%in%nn)] -> lasso_part
+
+nn <- c("description", "event", "film_date", "languages", 
+        "main_speaker", "name", "published_date",
+        "ratings", "related_talks", "speaker_occupation", "tags",
+        "title", "url")
+b_done[,!(colnames(b_done)%in%nn)] -> lasso_part
+
+
