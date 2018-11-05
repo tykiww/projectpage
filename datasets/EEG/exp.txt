@@ -1,0 +1,4 @@
+Analyze the data in the EEG Eye State file. 
+The goal is to identify a classifier to determine 
+whether the EEG attributes indicate eyes open or closed(eyeDetection column).
+
