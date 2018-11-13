@@ -1,1 +1,4 @@
 EEG Classifiers Project
+
+
+Analyze the data in the EEG Eye State file. Your task is to build a classifier to determine whether the EEG attributes indicate eyes open or closed(eyeDetection column). You should carefully analyze the data and then employ several different classifiers and compare the resulting models. You should use several of the metrics we discussed in class to compare and then choose the best. Write a report of your findings. Describe your approach, describe the data, describe the model choices and the tests and metrics that will be used. Report your results and back up your conclusions. Are there some indicators that are more important than others? What are they and how do you know?
