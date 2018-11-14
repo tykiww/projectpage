@@ -5,7 +5,7 @@ output: html_notebook
 
 ![](http://imgs.xkcd.com/comics/investing.png)
 
-Compounding is easy. Howevr, not if you do it by hand.
+Compounding is easy. However, not if you do it by hand.
 
 
 
