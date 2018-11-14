@@ -1,0 +1,6 @@
+pos and neg txt files
+
+This is for Deep learning in pythonprogramming.net
+
+https://pythonprogramming.net/using-our-own-data-tensorflow-deep-learning-tutorial/?completed=/tensorflow-neural-network-session-machine-learning-tutorial/
+
