@@ -2,3 +2,5 @@ retail data from University of California Irvine ML Dataset.
 
 http://archive.ics.uci.edu/ml/datasets/Online+Retail
 
+
+Excel and csv files.
