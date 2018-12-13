@@ -1,0 +1,10 @@
+https://datahack.analyticsvidhya.com/contest/practice-problem-big-mart-sales-iii
+
+
+Data from analyticsvidhya.com. 
+Big Mart Sales Practice Problem.
+Competition ends on 31 Dec 2017.
+
+Training and test dataset as a csv file.
+
+
