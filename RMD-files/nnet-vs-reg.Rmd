@@ -1,0 +1,215 @@
+---
+title: "Neural Nets vs Linear Regression"
+output: html_notebook
+# https://towardsdatascience.com/a-guide-to-an-efficient-way-to-build-neural-network-architectures-part-i-hyper-parameter-8129009f131b
+---
+
+Comparing linear regressions to 'simple' neural nets in R.
+
+Deep Learning is the trending disease du jour. However, it becomes a bit tricky for R programmers to hop right on. With so many pre-built deep learning and machine learning packages in python (theano, keras, etc.), it becomes much easier to hop on the pytorch and tensor train. 
+
+![](https://imgs.xkcd.com/comics/machine_learning.png)
+
+Nevertheless, there is still hope. **Here is a brief introduction to using a regression neural network in comparison to a model regression.** In the future, we will look at more cutting-edge technology availble for deep learning tools if application warrants. 
+
+So, just a brief introduction to Neural Networks. 
+
+Neural networks are essentially a computer model of a brain. Just as neurons in the brain fire activity leading to different weighted decisions, we are able to create a model that "learns" information using a large number of highly interconnected processing elements(neurons) working in parallel to solve a specific problem. Another thing to note, is that there is a difference between just a neural net and deep learning. Not all neural nets are deep learning models. However, almost all deep learning models are neural networks. The more "hidden nodes" you have, the "deeper" the neural net becomes. A simple 1 hidden layer of neural networks does not become a neural network. 
+
+![](https://www.kdnuggets.com/wp-content/uploads/neural-networks-layers.jpg)
+
+In some ways, these are multiple weighted decision trees that are connected at different layers and points. Rather than a traditional "algorithmic" approach, the data is passed through these layers of specific instructions. These instructions allow us to derive meaning from complicated or imprecise  data leading to an adaptive learning capability (the ability to learn how to do tasks based on the data given for training or initial experience. Essentially an optimization process for highest valued outcomes.)
+
+If you are interested in learning more, click [here](https://en.proft.me/2016/06/15/getting-started-deep-learning-r/). If you want to take a look at some python models done take a look at [my repository](https://github.com/tykiww/projectpage) (All classification models in tensorflow).
+
+<hr>
+
+```{r}
+require(tidyverse)
+require(GGally)
+require(car)
+require(caret)
+require(neuralnet)
+require(NeuralNetTools)
+View(set)
+```
+
+<hr>
+
+Let's get started. Data comes from the repository, originally from a kaggle dataset. View the repo and the link for details.
+
+It is also important to note that Income is in thousands and balance is in hundreds!! Don't forget that in your analysis.
+
+```{r}
+# Data read
+path <- "https://raw.githubusercontent.com/tykiww/projectpage/master/datasets/credit/Credit.csv"
+dat <- read.csv(path)
+# Clean Data, remove categorical.
+set <- select(dat,-X,-Education, -Gender, -Student, -Married, -Ethnicity)
+#  Pairplot analysis shows slight colinearity with relatively normal distributions.
+ggpairs(set, title = "Scatterplot Matrix of Features")
+```
+
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/nnet-vs-reg/one.png)
+
+We will now be comparing a parameterized multiple regression to a trained neural network. Of course, these are not done on equal playing fields, especially as they are completely different models. The reason why the categorical variables were removed was to help with leveling the comparison of covariates. For our comparison, we will be comparing the two based on <i>normalized RMSE, ease of use, and interpretability</i>.
+
+<h1>Linear Regression</h1>
+
+```{r}
+n <- names(set)[-6]
+formula <- as.formula(paste("Balance ~", paste(n[!n %in% "y"], collapse = " + ")))
+lm.dead <- lm(formula, data = set)
+# lm.dead$residuals %>% hist            # normal error distribution.
+
+### vif(lm.dead) ### 
+# Limit and Rating have high collinearity.
+# Will NOT remove for best model as it is not likely to 
+# affect the residuals and overall prediction.
+####################
+summary(lm.dead)
+# Normalized Root Mean Square Error (nRMSD)
+fullnRMSD <- lm.dead$residuals^2 %>%
+  mean %>% sqrt / (max(set$Balance) - min(set$Balance))
+c("Full nRMSD" = fullnRMSD)
+```
+
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -449.36101   40.57409 -11.075   <2e-16 ***
+    ## Income        -7.56211    0.38214 -19.789   <2e-16 ***
+    ## Limit          0.12855    0.05289   2.430   0.0155 *  
+    ## Rating         2.02240    0.79208   2.553   0.0110 *  
+    ## Cards         11.55272    7.06285   1.636   0.1027    
+    ## Age           -0.88832    0.47781  -1.859   0.0638 . 
+    ## 
+    ## Residual standard error: 161.6 on 394 degrees of freedom
+    ## Multiple R-squared:  0.8781,	Adjusted R-squared:  0.8765 
+    ## F-statistic: 567.4 on 5 and 394 DF,  p-value: < 2.2e-16
+
+    ##      nRMSD 
+    ## 0.08021265 
+
+We notice here that our regression model does rather well. After checking the residual conditions, we observe a very low nRMSD and a Rsq value near 90%. Some coefficients seemed not to reject p > 0.5. The most impactful key key driver for account balance seems to be rating with a magnitude of 695. This model was rather simple and easy to evaluate. 
+
+<h1>Simple Neural Network</h1>
+
+Fortunately or unfortunately, there are more steps required for neural networks. Unlike the regression model, nnets have so many parameters to tweak. In some ways we may see with so many parameters, the possiblity to "outperform" the regression should near-obvious. However, it will depend on which type of model and overall practicality and complexity.
+
+```{r}
+# First, normalize
+params <- preProcess(set, method=c("range"))
+dead.trans <- predict(params, set)
+# Next, split traintest
+set.seed(15)
+ind <- createDataPartition(dead.trans$Income, p=0.8, list = FALSE)
+train.dead <- dead.trans[ind,]
+test.dead <- anti_join(dead.trans,train.dead)
+```
+
+Interestingly, just like most machine learning algorithms, we will need to normalize our data. This is usually due to some inputs not having a 'naturally defined' range of values. For example, the average value might change over time (ie. a number of records in the database, sales, market size)
+
+Including raw values will teach your network on values from lower part of range, while ommitting current or actual values. Normalizing will account for any future changes. The `caret` package should take care of partioning and normalizing with ease (better than sci-kit).
+
+Now that we have standardized the data to 0 and 1, we will move on to creating our neural network. There are a handful of neural network packags available. However, most of them are not the best suited for sparse datasets as it may be difficult to converge (the model aimlessly looks for the local minima of its range). Out of the many different packages, `caret` has been the most versatile. It provides an interface to several different neural network packages and helps to tune parameters. Take a good look at the many different [types](https://rdrr.io/cran/caret/man/models.html). There is, of course, also the option of creating one from scratch, which may be the most intuitive.
+
+However, for this example, we are using the most simple case of neural network using back propagation. 
+This code block below is just for messing around with to find the potential layers and parameters that yield the lowest rmse. There are, of course, even more parameters to consider. The breadth is vast! 
+
+For some definitions:
+
+- linear.output: This must be specified as true. In the nnet package this is the same as linout.
+- threshold: This threshold specifies any values above or equal to a given threshold are converted to 1, while anything falling below it is converted to a 0 during activation.
+- stepmax: Threshold that specifies the maximum number of batches.
+- act.fct: activation function. These come in a wide variety. Our default here is "logistic"/ or sigmoid which works well for shallow neural nets.
+- learningrate: Recommended to try in powers of 10. Core learning characteristic that must be chosen in such a way that it is not too high wherein we are unable to converge to minima and not too low such that we are unable to speed up the learning process.
+- decay: Same as L2 regularization. This generally reduces variance with a trade-off of increasing bias i.e. lowering accuracy. Should be used when the model continues to over-fit even after considerably increasing Dropout value
+
+There are many other parameters that are important such as optimizers, epochs, dropout, etc. You'll be able to figure those out as you practice.
+
+```{r}
+# modelLookup(model = 'neuralnet') for what parameters to tune.
+tuneGrid <- expand.grid(.layer1 = c(1,5,9), .layer2 = c(1,9), .layer3 = c(0,1,2)) 
+# combinations of hidden nodes and decay. Done in no particular organized fashion.
+set.seed(15)
+models <- train(form=formula,     
+               data=train.dead, method="neuralnet", metric = "RMSE",
+               ### Parameters for layers
+               tuneGrid = tuneGrid,               
+               ### Parameters for optmization
+               learningrate = 0.0005, threshold = 0.005, stepmax = 1e+07) 
+plot(models, nid = F)
+```
+
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/nnet-vs-reg/two.png)
+
+After a brief gridsearch, our real model will be very simple. 2 layers of 9 nodes. Otherwise, we will not be needing to toy with too many parameters. We will now input the layers modeled into the neuralnet function.
+
+```{r}
+set.seed(15)
+    ## relu <- function(x) sapply(x, function(z) max(0,z))
+    ## softmax <- function(x) log(1+exp(x))
+trainmodels <- neuralnet(formula, linear.output = TRUE, data = train.dead, threshold = 0.005, hidden = c(9,9), )
+set.seed(15)
+testmodels <- neuralnet(formula, linear.output = TRUE, data = test.dead, threshold = 0.005, hidden = c(9,9))
+plot(trainmodels, rep = "best")
+```
+
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/nnet-vs-reg/three.png)
+
+It helps to visualize what exactly we created. Maybe you can play around with these parameters on your own! There are even more things you can do with this model.
+
+Now for our training and test comparison...
+
+```{r}
+# Neural Net RMSE
+  # Train
+nnet.nrmse.train <- mean((trainmodels$net.result[[1]][1] - train.dead[, 6])^2)/(max(train.dead)-min(train.dead))
+  # Test
+nnet.nrmse.test <- mean((testmodels$net.result[[1]][1] - test.dead[, 6])^2)/(max(test.dead)-min(test.dead))
+
+# Regression RMSE
+lm.train <- lm(formula, data = train.dead)
+lm.tests <- lm(formula, data = test.dead)
+
+  # Train 
+trainnRMSD <- lm.train$residuals^2 %>%
+  mean %>% sqrt / (max(train.dead$Balance) - min(train.dead$Balance))
+  # Test
+testnRMSD <- lm.tests$residuals^2 %>%
+  mean %>% sqrt / (max(test.dead$Balance) - min(test.dead$Balance))
+
+c("Neural Net Train nRMSE" = nnet.nrmse.train, "Neural net Test nRMSE" = nnet.nrmse.test, "Regression Train nRMSE" = trainnRMSD, "Regression Test nRMSE" = testnRMSD)
+```
+
+    ## Neural Net Train nRMSE  Neural net Test nRMSE Regression Train nRMSE  Regression Test nRMSE 
+    ##          0.05996050144          0.08264045538          0.07261684323          0.12792395562
+
+We notice immediately that with the most simple parameters, our neural net outperforms the basic regression. Even with an improved and transformed regression model, the neural net will still have even more parameters to tune. An even better method for neural networks may be to use a multi-layer perceptron network with dropout and a linear activation. This will venture into the keras and tensorflow realms, which we will cover in the future.
+
+Let's now prepare some fake data. We will take the most typical case of individual in the dataset and see how they do. Since the distribution in each variable except for age is right skewed, we will use the median for those, and mean for age. Now we are some 55 year old dude (or dudette) that makes close to 33k, with a credit limit of 4.5k, credit rating of 344 (pretty bad), and three credit cards.
+
+```{r}
+# Unnormalized covariates
+t(c("Income" = median(set$Income),"Limit" = median(set$Limit), "Rating" = median(set$Rating),"Cards" = median(set$Cards),"Age" = mean(set$Age))) %>% data.frame
+# Ranged (normalized covariates)
+incs <- median(set$Income)/(max(set$Income)-min(set$Income))
+lims <- median(set$Limit)/(max(set$Limit)-min(set$Limit)) 
+rats <- median(set$Rating)/(max(set$Rating)-min(set$Rating))
+crds <- median(set$Cards)/(max(set$Cards)-min(set$Cards)) 
+ages <- median(set$Age)/(max(set$Age)-min(set$Age)) 
+fakes <- t(c("Income" = incs,"Limit" = lims, "Rating" = rats,"Cards" = crds,"Age" = ages)) %>% data.frame 
+# Final results. How much does he have in his bank account?
+results <- neuralnet::compute(trainmodels,fakes)
+results$net.result*(max(set$Balance) - min(set$Balance))*100 # Income in 1000s, balance in 100s.
+```
+
+    ##             [,1]
+    ## [1,] 75794.58451
+
+Here is a point prediction of a 'typical' individuals account balance using the information we have. This seems rather reasonable, especially with someone that makes 33k a year. 
+
+Now, many of you are probably wondering.. How the heck am I supposed to interpret this web of nodes? Well, this gets more complicated than we really would like and is outside of the scope of this post. For now, we must remember that there are many working parts in our network. The best way, for now, to interpret our web of nodes is by its inputs and outputs. We are only facilitators of the learning algorithm. 
+
+Although it seems like the opportunity cost of time it takes to create a neural net **may** outweight that of finishing a regression and doing some more. Maybe if you are sure that your dataset meets the assumptions of linear regression to an appropriate degree for your purposes, there is no reason to use a neural network. Except, what's the fun in just doing the same things over and over again?
+
