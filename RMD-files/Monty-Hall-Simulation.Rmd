@@ -1,0 +1,81 @@
+---
+title: "Monty Hall Simulation"
+output: html_notebook
+---
+ 
+We may all be familiar with the famous monty hall problem. This game was originally introduced from the TV show ["Let's make a Deal"](https://en.wikipedia.org/wiki/Let%27s_Make_a_Deal) and became a sensation once Maylin Vos Savant wrote a controversial column about how "Switching doors" was more advantageous than not.
+
+![](https://imgs.xkcd.com/comics/monty_hall_2x.png)
+
+The game is very simple..
+
+You’re on a game show and you see 3 doors. Behind one door is something fantastic like a million dollars. Behind the other two doors are some ugly old goats. Your goal is to grab the prize (can be subjective).
+
+To begin, you get to pick one door that you feel conceals the prize. The host then opens a different door that does not contain the prize (revealing an old goat). Now, given a choice that you see an old goat, you have the option to stay with your door of initial choice, or "switch" to the other door.
+
+Wait, but once one door is eliminated, isn't it just a 50-50 chance? Does it matter whether or not I switch?
+
+Before we code it up, let's look at the math in a 'fixed' state.
+
+<hr>
+
+Below we see a very nice diagram created by [Roopam Upadhyay](ucanalytics.com) breaking down the mathematics. This diagram assumes that the contestant has chosen door A and the Host (Monty) opening door B as the dummy. If the prize (car) happens to be inside B, we notice there is a 0% probability that he will open door if we were to choose door B as our guess or if the car was actually inside. If the prize car happens to be in door C, we see that with certainty he will open B and so on. Using bayes rule that given door B was opened as the dummy, what is the probability that the car was actually in door X? We cleary see how this is dealing with the possible combinations of the sample space.
+
+![](https://cdn-images-1.medium.com/max/1600/1*BMy8z_jpQJjn1iEMrDpJjA.jpeg)
+
+If you are looking for another example, watch this [video]() of a more intuitive explanation.
+
+Now we will go on to code up our example by simulating this game. Let's walk through our example.
+
+We begin with a possible sample set of door A, B, or C. We make a random choice between the three and the car is possibly within those three.
+
+```{r}
+doors <- c("A","B","C")
+(sam_door <- sample(doors,1))
+(prize_door <- sample(doors,1))
+```
+
+    ## [1] "C"
+    ## [1] "A"
+
+It looks like our samples did not match. Now let's proceed to the next step. If we switch, we would surely lose. However, if we stay we will win. Let's switch and win.
+
+```{r}
+switch <- TRUE
+
+  if(switch) {
+    print(paste("You chose Door:",sam_door,"but switched.","The Prize was in:",prize_door))
+    sam_door != prize_door
+  } else {
+    print(paste("You chose Door:",sam_door,"but didn't switch.","The Prize was in:",prize_door))
+    sam_door == prize_door
+  }
+```
+
+    ## [1] "You chose Door: C but switched. The Prize was in: A"
+    ## [1] TRUE
+
+Above, we decided to fulfill two conditions. If we switched, the sample door and prize door would 'not-not' be equal and we will win (We have eliminated the host's door in this case because it doesn't matter) giving us a TRUE. If we did not switch, the boolean comparison will give us a FALSE, indicating that we had lost.
+
+This logic will hold for any sample of data. Now let's validate Maylin's statement. Is it really advantageous for us to switch doors every time? 
+
+We will now take the code we created above to count up how many times we win when switched, as compared to when we do NOT switch by comparing a function and running it over and over again (1000 times).
+
+```{r}
+monty <- function(switch = TRUE) {
+  sam_door <- sample(c("A","B","C"),1) ; prize_door <- sample(c("A","B","C"),1)
+  ifelse(switch,sam_door != prize_door,sam_door == prize_door)
+}
+
+require(dplyr) # '%>%' from'dplyr'
+((if_switch <- replicate(1000,monty(switch = TRUE))) %>% mean)   # produces a vector and finds the mean 
+((if_stay <- replicate(1000,monty(switch = FALSE))) %>% mean)
+```
+
+    ## [1] 0.686
+    ## [1] 0.329
+
+We are very close to Roopam's diagram showing 2/3 chance of winning when we switch, whereas 33% chance of winning when we stay. It is powerful what we can decipher from conditional probabilities and from what simulation studies can show us! Hopefully this will give us some more insights on choices that may not be as obvious to us as they may seem. 
+
+Hope you had some fun!
+

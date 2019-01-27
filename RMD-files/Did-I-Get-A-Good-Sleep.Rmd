@@ -36,7 +36,9 @@ plot(xx,prior,type="l", main="Prior Beta Distribution",xlab=expression(theta),
 abline(col = "red", v = beta_mean)
 ```
 
-![](one.png)
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/sleep/one.png)
+
+    ## [1] 0.375042
 
 That looks about just right. We are centered at about .4 which shows that we have just a little less good sleep than bad sleep just around half. It is also slightly centered to the left which shows a pretty close representation of the proportion of times we sleep well.
 
@@ -89,7 +91,7 @@ abline(h = mean(sleep$Quality), col = "dark red")
 par(mfrow=c(1,1))
 ```
 
-![](two.png)
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/sleep/two.png)
 
 There seems to be a slight-regular pattern, but this may be for a different analysis. It is good to know that our data is not too out of place. We also notice that we seem to actually be sleeping above 60% quality. Our guess doesn't seem so bad.
 
@@ -143,7 +145,7 @@ c("lower" = qbeta(.025, astar, bstar), "upper" = qbeta(.975, astar, bstar))
     ##     lower     upper 
     ## 0.6312536 0.7144191
 
-![](three.png)
+![](https://raw.githubusercontent.com/tykiww/tykiww.github.io/master/img/sleep/three.png)
 
 
 We notice here that our prior beliefs were *not* as correct as we thought they were, however, we see from the math that it had an influence on our data with some intuitive feel of how we actually slept. Here, we can say that probability that the proportion of our sleep time is within this interval (0.6312536, 0.7144191 ) 95% of the time.
