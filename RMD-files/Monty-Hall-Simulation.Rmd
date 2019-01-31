@@ -66,8 +66,9 @@ monty <- function(switch = TRUE) {
   sam_door <- sample(c("A","B","C"),1) ; prize_door <- sample(c("A","B","C"),1)
   ifelse(switch,sam_door != prize_door,sam_door == prize_door)
 }
-
+monty(FALSE)
 require(dplyr) # '%>%' from'dplyr'
+
 ((if_switch <- replicate(1000,monty(switch = TRUE))) %>% mean)   # produces a vector and finds the mean 
 ((if_stay <- replicate(1000,monty(switch = FALSE))) %>% mean)
 ```
