@@ -1,4 +1,4 @@
-# projectpage
+# Projectpage
 
 - RMD Files : Coding and Statistical Analysis. RMD files are blog templates for tykiww.github.io
 - Python-Projects : Python objects for statistical analysis.
