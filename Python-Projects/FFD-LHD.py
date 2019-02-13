@@ -10,21 +10,25 @@
 # continuous manner.
 
 # Below is the implementation of both experimental designs
-
+python
 # python packages
 from pyDOE import lhs
 import numpy as np
 from itertools import product
 from math import acos, degrees
 
+
+
 amps = np.linspace(-10,10.,20) # 
 phirange = np.linspace(0,360,40) # 40
 thetrange = []
-for theta in np.linspace(1,0,20): # 20
+for theta in np.linspace(1,0,9): # 20
   thetrange.append(degrees(acos(theta)))
 
+thetrange
 ffd = list(product(amps,phirange,thetrange))
 len(ffd)
+
 
 # The merit in doing the cartesian product is its ease.
 # Because the distribution of theta is to be sampled using
@@ -40,13 +44,17 @@ phirange = np.random.uniform(0,360,38).tolist()
 phirange.sort() ; phirange.insert(0,0.) ; phirange.append(360.) # 40
 
 thetrange = [0]
-for theta in np.linspace(1,0,18): # 20
+for theta in np.linspace(1,0,28): # 30
   thetrange.append(abs(np.random.normal(degrees(acos(theta)))))
 
 thetrange.append(90.)
 
+
 ffd = list(product(amps,phirange,thetrange))
 len(ffd)
+
+
+
 
 
 # Here is the latin hypercube design. It is fairly straightforward
@@ -56,19 +64,68 @@ len(ffd)
 # any set of distributions.
 
 
-cube = lhs(5-,3) # 26 x 26 x 26
+cube = lhs(13,3) 
 
-thetrange = [degrees(acos(i)) for i in cube[0,]] # theta
-thetrange.insert(0,0.0) ; thetrange.append(90.)
-phirange = np.random.uniform(0,360,len(cube[0,])).tolist() # phi
-phirange.insert(0,0.0) ; phirange.append(90.)
-amps = np.random.uniform(-10,10,len(cube[0,])).tolist() # p
-amps.insert(0,-10) ; amps.append(10.)
+# theta 25
+thetrange = [degrees(acos(i)) for i in cube[0,]] 
+thetrange += np.linspace(0,90,12).tolist() # 115
+thetrange.sort() # we were not sure if point values were necessary, so we included them in the data.
+len(thetrange) # made it huge.
+# phi 55
+phirange = np.random.uniform(0,360,len(cube[0,])).tolist()  # inserted 1/3 of point values
+phirange += np.linspace(0,360,42).tolist() 
+phirange.sort()
+len(phirange)
+# amps 15
+amps = np.random.uniform(-10,10,len(cube[0,])).tolist() # inserted 1/3 of point values 
+amps += np.linspace(-10,10,2).tolist() # Do we need to add point values?
+amps.sort()
+len(amps)
 
 lhd = list(product(amps,phirange,thetrange))
-len(lhd) # 17576
+len(lhd) # 17576 = 25 X 55 X 15 after playing around with dimensions
+
+
+# using ray tracing takes a while to load.
 
 
 
 
+############################### OVERALL METHOD USED ################################
 
+# Cartesian Product after adding noise.
+from pyDOE import lhs
+import numpy as np
+from itertools import product
+from math import acos, degrees
+
+
+amps = np.random.uniform(-10,10,18).tolist()
+amps.sort() ; amps.insert(0,-10.) ; amps.append(10.) # 20
+
+phirange = np.random.uniform(0,360,38).tolist()
+phirange.sort() ; phirange.insert(0,0.) ; phirange.append(360.) # 40
+
+thetrange = [0]
+for theta in np.linspace(1,0,28): # 30
+  thetrange.append(abs(np.random.normal(degrees(acos(theta)))))
+
+thetrange.append(90.)
+
+
+ffd = list(product(amps,phirange,thetrange))
+
+
+half = ffd[0:12000]
+quart = ffd[0:6000]
+eighth = ffd[0:3000]
+
+# Write the file as filename, specify directory.
+open('full_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in ffd))
+open('half_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in half))
+open('quarter_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in quart))
+open('eighth_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in eighth))
+
+
+
+quit()
