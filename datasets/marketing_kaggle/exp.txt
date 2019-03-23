@@ -1,0 +1,15 @@
+Kaggle dataset for marketing analysis of variance.
+
+
+Age
+Gender
+OwnHome
+Married
+Location
+Salary
+Children
+History
+Catalogs
+AmountSpent
+
+https://www.kaggle.com/arawind/retail-marketing/version/1
