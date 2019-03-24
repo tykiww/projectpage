@@ -113,19 +113,20 @@ for theta in np.linspace(1,0,28): # 30
 thetrange.append(90.)
 
 
-ffd = list(product(amps,phirange,thetrange))
+ffd = list(product(amps,phirange,thetrange)) # 24000
 
 
 half = ffd[0:12000]
 quart = ffd[0:6000]
 eighth = ffd[0:3000]
+sixteenth = ffd[0:1500]
 
 # Write the file as filename, specify directory.
 open('full_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in ffd))
 open('half_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in half))
 open('quarter_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in quart))
 open('eighth_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in eighth))
-
+open('sixtnth_params_parallel.txt', 'w').write('\n'.join('%s %s %s' % x for x in sixteenth))
 
 
 quit()

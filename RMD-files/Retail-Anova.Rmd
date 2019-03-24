@@ -1,0 +1,110 @@
+---
+title: "Retail ANOVA"
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+Sometimes, we want to keep our analysis short and sweet. Which factor is most important? Of these factors, is there a particular factor level that is important? How much of an effect is something making on your observations?
+
+Of the many linear models, the Analysis of Variance is probably the easiest and most intuitive comparison models for categorical to numeric inference. It is technically the same thing as a regression, actually exactly the same with one small twist. An ANOVA reports each mean and a p-value and says at least two factors are "statistically different". A regression, on the other hand, only reports one mean (intercept) and differences of that mean from other means and individual covariate comparisons. It's just the same model presented in a different way.
+
+### Case
+
+![](https://thefinancialbrand.com/wp-content/uploads/2016/02/rebranding.jpg)
+
+Let's say we have some profile information on our customers. We are a retail store that tracks yearly spending of certain households through subscription catalogs. Seeking to do some market research, we are wondering what type of people are most affected by our product. Below is a dataset from kaggle that shows general characteristics of individual buyers and their spending patterns.
+
+```{r}
+library(tidyverse)
+path <- "https://raw.githubusercontent.com/tykiww/projectpage/master/datasets/marketing_kaggle/retailmarket.csv"
+retail <- read_csv(path) %>% na.omit; rm(path)
+glimpse(retail)
+```
+
+Our response will be the `AmountSpent` and our categorical variables of interest will be the rest. This means we will have to group numerical values. We'll also remove history, location, and catalogs since we don't understand the history, don't know how relative location is, and it seems odd that there subscribers can only buy 6, 18, or 24 catalogs. Not much information on those right now.
+
+```{r}
+# recode salary from low to high using quantiles
+retail$Salary_Code <- ifelse(retail$Salary < summary(retail$Salary)[2], "Low",
+       ifelse(retail$Salary > summary(retail$Salary)[5],"High", "Med"))
+# convert all variables to factors and create new dataset.
+dplyr::select(retail,-Salary, -AmountSpent, -History, -Location, -Catalogs)  %>% 
+  cbind("Spent" = retail$AmountSpent) %>% as.data.frame -> retail
+```
+
+Now that we have our data, let's get our model started. Just like we are performing a regression, we will stick it into a linear model and wrap it in an `anova()`.
+
+```{r}
+lm(Spent ~ Age + Gender + OwnHome + Married + Children + Salary_Code, data = retail) -> anova.out 
+anova(anova.out)
+```
+
+Our output shows significance in all variables. Every variable, independent of each other seem to have an effect on the spending patterns. Now that doesn't help us very much. It would have helped us parse out variables that were not of interest. We will need to look at more specifics within the levels to see where there is impact.
+
+Let's explore the data a little more. We must be very careful in choosing our variables. If we pick too many factors to block with, our model will overfit. Therefore, an interesting analysis may be a comparison of interactions. In simple terms, interactions are when two factors together have an influence whether or not they are statistically significant alone. Interactions can be found by using plots. If the slopes of two lines differ largely, we can infer that there may be an important interaction. since we have 6 unique factors, we have choose(6,2) = 15 different plots to work with.
+
+
+```{r}
+# define combinations
+ya <- t(combn(names(retail)[-7],2)) 
+# 36 interaction plots
+par(mfrow = c(3,3))
+for(i in 1:7) {
+  interaction.plot(unlist(retail[ya[i,1]]), unlist(retail[ya[i,2]]), 
+                   retail$Spent, mean, xlab = ya[i,1], trace.label = ya[i,2])
+  }
+for(i in 8:15) {
+  interaction.plot(unlist(retail[ya[i,1]]), unlist(retail[ya[i,2]]), 
+                   retail$Spent, mean, xlab = ya[i,1], trace.label = ya[i,2])
+  }
+par(mfrow = c(1,1))
+```
+
+From all thse plots, it seems that the most prominent interactions are shown in variants of age, salary level, married, and children. To run a model of interactions, we use the `:` symbol to tie the factors together.
+
+```{r}
+lm(Spent ~ Age:Salary_Code + Age:Married + Age:Children + Salary_Code:Married + Salary_Code:Children + Married:Children, data = retail) -> inter.out; anova(inter.out)
+```
+
+The most significant interactions out of those pulled apart are between age, salary, and number of children. Let's take a look at the interaction plots for these three.
+
+```{r}
+interaction.plot(retail$Age, retail$Salary_Code, retail$Spent, mean, col = c("black","red","green"))
+interaction.plot(retail$Age, retail$Children, retail$Spent, mean, col = c("black","red","green", "blue"))
+interaction.plot(retail$Salary_Code, retail$Children, retail$Spent, mean,col = c("black","red","green", "blue"))
+```
+
+### Summary
+
+#### Individual level (cetris paribus)
+
+Gender was significant as, on average, men had a tendency to spend more than women. However, interactions we did not observe indicate that different levels of children had different average changes.
+
+Those who own a home tend to spend much more on average than those who rent all accross the board.
+
+Not considering any interactions, married individuals tend to spend more than non-married people on average.
+
+There is definitely a lot more interesting interactions that we did not take into account. However, knowing this, gives us powerful information on what are customers are really like.
+
+#### Interaction
+
+As for age and salary, we notice that young individuals (not sure how old) with high salaries tend to spend significantly less than all other groups. It still holds true that the older an individual gets, they spend more on average (most likely to disposable income).
+
+The number of children seemed to suggest important details to this analysis as well. Those with no children were the highest spenders in their middle age. The more children a houshold had, the less they seemed to spend on this product. However, those with 2 children showed a seemingly insignificant growth as they grew older.
+
+As household salary increased, the average amount spent per year also increased at different rates depending on the number of children. As we saw before, the more children an individual had, the less likely they were to spend, but this average change is not parallel. The highest change in amount spent from group to group were households with no children at all.
+
+To summarize, we conclude significance in all factors shown in our data. Our profile of our highest paying customers is as follows: Older married men with high income. They tend to own their own homes and have less children as well. 
+
+To see how different they are from each other, we will need to wrap a summary on our linear model. Though we will not be doing this for the post, it is technically a regression analysis with interactions.
+
+### Conclusion
+
+Overall, we notice how using ANOVA is a simple but powerful technique for customer segmentation. Not only can this model tell you if there are statistically significant differences between the means of two or more unrelated groups, it allows to understand interactional factors and if they actually matter. Oftentimes we think that we will need to perform difficult analyses every time, but oftentimes the simpler it is, the better. Good luck on your next project!
+
+
+
+
+
